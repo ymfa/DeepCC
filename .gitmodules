@@ -1,0 +1,3 @@
+[submodule "bivec"]
+	path = bivec
+	url = https://github.com/ymfa/bivec.git
