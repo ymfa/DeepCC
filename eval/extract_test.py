@@ -1,4 +1,4 @@
-import os, glob, csv
+import os, glob, csv, sys
 
 trad2simp = dict()
 dir_path = os.path.dirname(os.path.realpath(__file__))
@@ -10,9 +10,14 @@ with open(os.path.join(dir_path, 'chars_of_interest.txt'), 'r') as f:
       trad2simp[char] = simp
 
 if __name__ == "__main__":
+  try:
+    dataset_name = sys.argv[1]
+  except:
+    print("Usage: python extract_test.py dataset_name")
+    sys.exit()
   test_cases = []
-  for filename in glob.glob('sinica_test/*.tc'):
-    char = filename[12]
+  for filename in glob.glob(os.path.join(dataset_name, '*.tc')):
+    char = filename[len(dataset_name)+1]
     char_simp = trad2simp[char]
     pos, trad, simp = [], [], []
     removed_ids = set()
@@ -21,7 +26,7 @@ if __name__ == "__main__":
         idx, sentence = line.strip().split('\t')
         pos.append(int(idx))
         trad.append(sentence)
-    with open('sinica_test/%s.sc' % char, 'r') as f:
+    with open(os.path.join(dataset_name, '%s.sc' % char), 'r') as f:
       for i, line in enumerate(f):
         idx, sentence = line.strip().split('\t')
         assert int(idx) == pos[i]
@@ -36,7 +41,7 @@ if __name__ == "__main__":
       case = {'orig_char': char_simp, 'gold_char': char, 'char_index': p,
               'orig': s, 'gold': t, 'orig_line_num': i}
       test_cases.append(case)
-  with open('sinica_test.csv', 'w', newline='') as csvfile:
+  with open('%s.csv' % dataset_name, 'w', newline='') as csvfile:
     fieldnames = ['orig_char', 'gold_char', 'char_index', 'orig', 'gold', 'orig_line_num']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()

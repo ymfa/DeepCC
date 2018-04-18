@@ -2,7 +2,7 @@ import glob, editdistance
 from collections import defaultdict
 
 if __name__ == "__main__":
-  for filename in glob.glob('sinica_raw/*.tc'):
+  for filename in glob.glob('raw/*.tc'):
     lines = []
     num_duplicates = 0
     with open(filename, 'r') as f:

@@ -21,13 +21,13 @@ def grep(ukey, char):
 if __name__ == "__main__":
   ukey = sys.argv[1]
   chars = []
-  with open('chars_of_interest.txt', 'r') as f:
+  with open('../chars_of_interest.txt', 'r') as f:
     for line in f:
       _, trad = line.strip().split('\t')
       chars.extend(trad.replace('(','').replace(')', ''))
   
   for char in chars:
-    if not os.path.isfile('sinica_raw/%s.txt' % char):
+    if not os.path.isfile('raw/%s.txt' % char):
       try:
         grep(ukey, char)
       except Exception as e:
