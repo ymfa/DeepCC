@@ -52,7 +52,7 @@ for i, row in csv.iterrows():
     trad_error_count[gold_char] += 1
     if pred_char not in simp2trad[orig_char]:
       print("%s is mapped to an out-of-table char %s" % (orig_char, pred_char))
-error_list.to_csv(dataset + '_errors.csv', index=False)
+error_list.to_csv(dataset + '_opencc_errors.csv', index=False)
 
 # make report
 report = pd.DataFrame(columns=['char_gold', 'char_orig', 'error_num', 'total', 'error_rate'])
@@ -63,8 +63,8 @@ for trad, simp in trad2simp.items():
   total_error += error
   total_count += count
 report.sort_values(['char_orig', 'error_rate', 'char_gold'], inplace=True)
-report.loc[len(report)] = ['Avg', 'Avg', total_error, total_count, "%.3f" % (total_error/total_count)]
-report.to_csv(dataset + '_report.csv', index=False)
+report.loc[len(report)] = ['Total', 'Total', total_error, total_count, "%.3f" % (total_error/total_count)]
+report.to_csv(dataset + '_opencc_report.csv', index=False)
 
 # clean up
 os.remove('test.sc')
